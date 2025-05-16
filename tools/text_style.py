@@ -22,4 +22,9 @@ class TextStyle:
 
 class BaseStyle(TextStyle):
     def __init__(self, size: int, color: tuple, bold: bool = False):
-        super().__init__("Consolas", size, color)
+        super().__init__("Consolas", size, color, bold)
+
+
+class DefaultStyle(TextStyle):
+    def __init__(self, size: int, color: tuple, bold: bool = False):
+        super().__init__(None, size, color, bold)

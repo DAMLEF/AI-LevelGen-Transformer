@@ -12,14 +12,14 @@ class TextZone(Button):
 
         self.hide_entry = hide_entry
 
-        super().__init__(x, y, width, height, name, self.inverse_writing)
+        super().__init__(x, y, width, height, name, action=self.inverse_writing)
 
         self.style = style
 
         self.display_continuity = display_continuity
 
         self.valid_button = TextButton(x + width + 3, y, height, height, "Valid_" + name, BaseStyle(70, BLACK), "",
-                                       True, self.validation)
+                                       True, action=self.validation)
         self.valid = False
 
         self.simple_zone = simple_zone

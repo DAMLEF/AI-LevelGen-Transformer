@@ -3,7 +3,7 @@ import time
 
 from tools.other import *
 
-input_info = {"M_POS": (0, 0), "LMB": False, "MW": 0}
+input_info = {"M_POS": (0, 0), "LMB": False, "MW": 0, "MW_relative": 0}
 input_stack = []
 input_last_time = {}
 input_check = {}
@@ -14,14 +14,24 @@ def input_actualise():
 
 
 INPUT_DELAY = 0.5
-REPETITION_RATE = 15      # Hz
+REPETITION_RATE = 15  # Hz
+
+
+def get_relative_mouse_wheel_value():
+    result = input_info["MW_relative"]
+
+    input_info["MW_relative"] = 0
+
+    return result
+
+
 def input_repetition_check(key: int) -> bool:
     state = input_check.get(key)
     if state is None or state[0] is False:
         input_check[key] = (True, 1)
         return True
     else:
-        if time.time() - input_last_time[key] - INPUT_DELAY - state[1] * (1/REPETITION_RATE) > 0:
+        if time.time() - input_last_time[key] - INPUT_DELAY - state[1] * (1 / REPETITION_RATE) > 0:
             input_check[key] = (True, state[1] + 1)
             return True
         else:
@@ -57,6 +67,13 @@ def check_input(py_event: pygame.event) -> None:  # For each key pressed, we tur
             input_info["RMB"] = False
     elif py_event.type == pygame.MOUSEWHEEL:
         input_info["MW"] += py_event.y
+
+        input_info["MW_relative"] = py_event.y
+
+
+def reset_key(key: pygame.key):
+    input_info[key] = False
+
 
 def input_is_letters_or_numbers(key: int):
     if key_input.get(key) is not None:
